@@ -1,12 +1,17 @@
-provider "aws" {
-	region = "us-east-1"
+terraform {
+  backend "s3" {
+    bucket         = "terraform-state-09853"
+    key            = "terraform/state.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "terraform-lock"
+  }
 }
 
-resource "aws_instance" "my_ec2" {
-	ami				= "ami-05b10e08d247fb927"
-	instance_type	= "t2.micro"
-	key_name		= "NewKeyPair"
-	tags 			= {
-		Name = "TerraformEC2Instance"
-	}
+resource "aws_instance" "MyTerraformInstance" {
+  ami           = "ami-00a929b66ed6e0de6"
+  instance_type = "t2.micro"
+  tags = {
+    Name = "Terraform-Test-Instance"
+  }
 }
